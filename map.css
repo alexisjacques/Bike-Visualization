@@ -1,23 +1,107 @@
 html,
 body {
     margin: 0;
-    padding: 5;
+    padding: 0;
     height: 100%;
     width: 100%;
     display: flex;
-    justify-content: center;
-    /* Center horizontally */
-    align-items: center;
-    /* Center vertically */
+    flex-direction: column;
+}
+
+header {
+    display: flex;
+    gap: 1em;
+    align-items: baseline;
+    padding: 1em;
+}
+
+header label {
+    margin-left: auto;
+}
+
+#time-display,
+#any-time {
+    display: block;
+    margin-top: 0.5em;
+}
+
+#any-time {
+    color: #888;
+    font-style: italic;
 }
 
 #map {
     width: 100%;
     /* Adjust width to your desired size */
-    height: 100%;
-    /* Adjust height to your desired size */
+    flex: 1;
+    /* Take remaining height */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     /* Optional: subtle shadow for effect */
     border-radius: 8px;
     /* Optional: rounded corners */
+    position: relative;
+    /* Required for absolute positioning of children */
+}
+
+#map svg {
+    position: absolute;
+    /* Position on top of the map */
+    top: 0;
+    left: 0;
+    z-index: 2;
+    /* Ensure it's above the map */
+    width: 100%;
+    /* Fill the map container width */
+    height: 100%;
+    /* Fill the map container height */
+    pointer-events: none;
+    /* Allow map interactions to pass through */
+}
+
+/* Shared color variables for both circles and legend */
+#map svg circle,
+.legend > div {
+    --color-departures: steelblue;
+    --color-arrivals: darkorange;
+    --color: color-mix(
+        in oklch,
+        var(--color-departures) calc(100% * var(--departure-ratio)),
+        var(--color-arrivals)
+    );
+}
+
+#map svg circle {
+    pointer-events: auto;
+    /* Enable pointer events on circles for tooltips */
+    cursor: pointer;
+    /* Show pointer cursor on hover */
+    fill: var(--color);
+}
+
+/* Legend styling */
+.legend {
+    display: flex;
+    margin-block: 1em;
+    gap: 1px;
+    padding-inline: 1em;
+}
+
+.legend > div {
+    flex: 1;
+    background: var(--color);
+    padding: 0.5em 2em;
+    color: white;
+    font-weight: bold;
+}
+
+.legend > div:first-child {
+    text-align: left;
+}
+
+.legend > div:nth-child(2) {
+    text-align: center;
+}
+
+.legend > div:last-child {
+    text-align: right;
 }
